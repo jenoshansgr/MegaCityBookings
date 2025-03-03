@@ -59,14 +59,12 @@ public class User {
             String username,
             String password,
             String role,
-            String email,
-            Date createdDate
+            String email
     ) {
         this.username = username;
         this.password = password;
         this.role = role;
         this.email = email;
-        this.createdDate = createdDate;
     }
 
     public boolean authenticate(String inputUsername, String inputPassword) {
