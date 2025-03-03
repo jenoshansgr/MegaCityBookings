@@ -14,8 +14,10 @@ public class IndexServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/template.jsp");
         try {
+            request.setAttribute("page", "index");
+            request.setAttribute("title", "Welcome");
             dispatcher.forward(request, response);
         } catch (ServletException e) {
             throw new RuntimeException(e);
