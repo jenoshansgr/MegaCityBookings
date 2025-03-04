@@ -1,6 +1,6 @@
 package com.megacity.bookings.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 // User Authentication System
 public class User {
@@ -55,23 +55,9 @@ public class User {
         this.createdDate = createdDate;
     }
 
-    public User(
-            String username,
-            String password,
-            String role,
-            String email
-    ) {
-        this.username = username;
-        this.password = password;
-        this.role = role;
-        this.email = email;
-    }
-
-    public boolean authenticate(String inputUsername, String inputPassword) {
-        return this.username.equals(inputUsername) && this.password.equals(inputPassword);
-    }
-
     public String getRole() {
         return role;
     }
+
+
 }

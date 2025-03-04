@@ -7,6 +7,7 @@ public class Customer {
     protected String email;
     protected String address;
     protected String phoneNumber;
+    protected int userId;
 
     public int getId() {
         return id;
@@ -54,5 +55,13 @@ public class Customer {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

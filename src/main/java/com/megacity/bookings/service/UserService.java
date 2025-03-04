@@ -15,21 +15,9 @@ public class UserService {
         this.userDAO = new UserDAO();
     }
 
-    public boolean registerUser(String username,
-                                String password,
-                                String role,
-                                String email) {
-        User user = new User(username, password, role, email);
-        return this.userDAO.saveUser(user);
-    }
-
-    public User loginUser(String username, String password) {
-        try {
-            User user = this.userDAO.getUserByUsernameAndPassword(username, password);
-            SessionManager.login(user);
-            return user;
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
+    public User loginUser(String username, String password) throws AuthenticationException {
+        User user = this.userDAO.getUserByUsernameAndPassword(username, password);
+        SessionManager.login(user);
+        return user;
     }
 }

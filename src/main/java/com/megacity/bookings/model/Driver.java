@@ -1,6 +1,6 @@
 package com.megacity.bookings.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Driver {
     protected int id;
