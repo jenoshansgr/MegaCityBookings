@@ -1,7 +1,7 @@
 <div class="row justify-content-md-center">
     <div class="col-sm-5">
         <h2 class="text-center">Welcome to MegaCity</h2>
-        <h3>Register</h3>
+        <h3>Sign Up</h3>
         <form method="post" action="register">
             <div class="mb-3">
                 <label for="firstName" class="form-label">First Name</label>
@@ -31,11 +31,11 @@
             <% if(request.getParameter("error") != null) { %>
             <% String errorString = (String) request.getParameter("error"); %>
             <div class="text-danger mb-2"><%= errorString%></div>
-            <button type="submit" class="btn btn-danger w-100">Sign up</button>
+            <button type="submit" class="btn btn-danger w-100">Sign Up</button>
             <% } else {%>
-            <button type="submit" class="btn btn-primary w-100">Sign up</button>
+            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
             <% } %>
         </form>
-        <a href="register" class="anchor-link text-primary w-100">Register</a>
+        <a href="login" class="anchor-link text-primary w-100">login</a>
     </div>
 </div>

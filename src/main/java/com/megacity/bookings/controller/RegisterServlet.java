@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebServlet("/login")
+@WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

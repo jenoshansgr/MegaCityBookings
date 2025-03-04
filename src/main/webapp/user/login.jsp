@@ -19,6 +19,6 @@
                 <button type="submit" class="btn btn-primary w-100">Login</button>
             <% } %>
         </form>
-        <a href="register" class="anchor-link text-primary w-100">Register</a>
+        <a href="register" class="anchor-link text-primary w-100">Sign up</a>
     </div>
 </div>
