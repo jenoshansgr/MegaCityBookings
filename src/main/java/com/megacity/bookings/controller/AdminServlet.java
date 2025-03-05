@@ -22,6 +22,7 @@ public class AdminServlet extends HttpServlet {
                     !session.getAttribute("role").equals("admin")) {
                 session.invalidate();
                 response.sendRedirect("login");
+                return;
             }
 
             request.setAttribute("page", "admin");

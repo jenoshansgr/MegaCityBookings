@@ -24,6 +24,7 @@ public class CabServlet extends HttpServlet {
                     !session.getAttribute("role").equals("admin")) {
                 session.invalidate();
                 response.sendRedirect("login");
+                return;
             }
 
             CabService cabService = new CabService();
