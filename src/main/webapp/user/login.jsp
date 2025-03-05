@@ -1,7 +1,8 @@
 <div class="row justify-content-md-center">
     <div class="col-sm-5">
         <h2 class="text-center">Welcome to MegaCity</h2>
-        <h3>Login</h3>
+        <hr>
+        <h3 class="text-center">Login</h3>
         <form method="post" action="login">
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
