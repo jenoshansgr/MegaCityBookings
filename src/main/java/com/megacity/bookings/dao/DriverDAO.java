@@ -5,6 +5,7 @@ import com.megacity.bookings.model.Driver;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 
 public class DriverDAO extends MainDAO {
@@ -36,7 +37,7 @@ public class DriverDAO extends MainDAO {
         String query = "INSERT INTO " + this.tableName + " (firstName, lastName, licenseNo, licenseExpireDate, status) " +
                 "VALUES (?, ?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             // Set values for the placeholders
             stmt.setString(1, driver.getFirstName());
@@ -68,7 +69,7 @@ public class DriverDAO extends MainDAO {
         String query = "UPDATE " + this.tableName + " SET firstName=?, lastName=?, licenseNo=?, licenseExpireDate=?, status=? " +
                 " WHERE id=?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             // Set values for the placeholders
             stmt.setString(1, driver.getFirstName());

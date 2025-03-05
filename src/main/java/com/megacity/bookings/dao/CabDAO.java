@@ -5,6 +5,7 @@ import com.megacity.bookings.model.Cab;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 
 public class CabDAO extends MainDAO {
@@ -35,7 +36,7 @@ public class CabDAO extends MainDAO {
         String query = "INSERT INTO " + this.tableName + " (cabTypeId, model, number, status) " +
                 "VALUES (?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             // Set values for the placeholders
             stmt.setInt(1, cab.getCabTypeId());
@@ -66,7 +67,7 @@ public class CabDAO extends MainDAO {
         String query = "UPDATE " + this.tableName + " SET cabTypeId=?, model=?, number=?, status=? " +
                 " WHERE id=?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             // Set values for the placeholders
             stmt.setInt(1, cab.getCabTypeId());

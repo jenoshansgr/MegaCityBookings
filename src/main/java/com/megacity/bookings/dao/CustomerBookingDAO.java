@@ -5,6 +5,7 @@ import com.megacity.bookings.model.CustomerBooking;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 
 public class CustomerBookingDAO extends MainDAO {
@@ -32,7 +33,7 @@ public class CustomerBookingDAO extends MainDAO {
         String query = "INSERT INTO " + this.tableName + " (customerId, bookingId) " +
                 "VALUES (?, ?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             // Set values for the placeholders
             stmt.setInt(1, customerBooking.getCustomerId());

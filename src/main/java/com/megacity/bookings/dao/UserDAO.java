@@ -36,7 +36,7 @@ public class UserDAO extends MainDAO {
     public User getUserByUsernameAndPassword(String username, String password) throws AuthenticationException {
         String query = "SELECT * FROM " + this.tableName + " WHERE username='" + username +
                 "' AND password='" + getMD5(password) + "'";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {

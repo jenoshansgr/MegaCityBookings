@@ -1,13 +1,11 @@
 package com.megacity.bookings.dao;
 
 import com.megacity.bookings.model.DatabaseConnection;
-import com.megacity.bookings.model.User;
 
-import javax.naming.AuthenticationException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 public class MainDAO {
@@ -24,7 +22,7 @@ public class MainDAO {
 
     public ResultSet selectById(int id) {
         String query = "SELECT * FROM " + tableName + " WHERE id=?";
-        try (PreparedStatement stmt = connection.prepareStatement(query))  {
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 
@@ -40,7 +38,7 @@ public class MainDAO {
 
     public boolean deleteById(int id) {
         String query = "DELETE FROM " + tableName + " WHERE id=?";
-        try (PreparedStatement stmt = connection.prepareStatement(query))  {
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id);
 
             int rowsAffected = stmt.executeUpdate();

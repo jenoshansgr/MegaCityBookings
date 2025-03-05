@@ -1,16 +1,11 @@
 package com.megacity.bookings.dao;
 
 import com.megacity.bookings.model.Customer;
-import com.megacity.bookings.model.User;
 
-import javax.naming.AuthenticationException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 
 public class CustomerDAO extends MainDAO {
@@ -30,7 +25,7 @@ public class CustomerDAO extends MainDAO {
                 customer.setEmail(rs.getString("email"));
                 customer.setAddress(rs.getString("address"));
                 customer.setPhoneNumber(rs.getString("phoneNumber"));
-                customer.setUserId(rs.getInt("userId"));;
+                customer.setUserId(rs.getInt("userId"));
                 return customer;
             }
         } catch (SQLException e) {
@@ -43,7 +38,7 @@ public class CustomerDAO extends MainDAO {
         String query = "INSERT INTO " + this.tableName + " (firstName, lastName, email, address, phoneNumber, userId) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             // Set values for the placeholders
             stmt.setString(1, customer.getFirstName());
@@ -77,7 +72,7 @@ public class CustomerDAO extends MainDAO {
         String query = "UPDATE " + this.tableName + " SET firstName=?, lastName=?, email=?, address=?, phoneNumber=?, userId=? " +
                 " WHERE id=?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             // Set values for the placeholders
             stmt.setString(1, customer.getFirstName());
