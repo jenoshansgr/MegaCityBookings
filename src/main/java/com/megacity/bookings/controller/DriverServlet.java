@@ -9,16 +9,16 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name = "bookingServlet", value = "/booking")
-public class BookingServlet extends HttpServlet {
+@WebServlet(name = "driverServlet", value = "/driver")
+public class DriverServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/template.jsp");
         try {
 
-            request.setAttribute("page", "booking");
-            request.setAttribute("title", "Booking");
+            request.setAttribute("page", "driver");
+            request.setAttribute("title", "Driver");
             dispatcher.forward(request, response);
         } catch (ServletException e) {
             throw new RuntimeException(e);

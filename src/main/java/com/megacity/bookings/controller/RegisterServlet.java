@@ -33,6 +33,7 @@ public class RegisterServlet extends HttpServlet {
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String address = request.getParameter("address");
+        String phoneNumber = request.getParameter("phoneNumber");
         String email = request.getParameter("email");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -49,6 +50,7 @@ public class RegisterServlet extends HttpServlet {
             Customer customer = new Customer();
             customer.setFirstName(firstName);
             customer.setLastName(lastName);
+            customer.setPhoneNumber(phoneNumber);
             customer.setAddress(address);
             customer.setEmail(email);
 
@@ -57,7 +59,13 @@ public class RegisterServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("userId", userId);
             session.setAttribute("username", user.getUsername());
-            response.sendRedirect("index");
+            session.setAttribute("role", user.getRole());
+
+            if (user.getRole().equals("admin")) {
+                response.sendRedirect("admin");
+            } else {
+                response.sendRedirect("booking");
+            }
         } catch (Exception e) {
             response.sendRedirect("register?error=" + e.getMessage());
         }

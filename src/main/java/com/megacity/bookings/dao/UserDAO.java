@@ -6,10 +6,7 @@ import javax.naming.AuthenticationException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 
 public class UserDAO extends MainDAO {
@@ -62,7 +59,7 @@ public class UserDAO extends MainDAO {
         String query = "INSERT INTO " + this.tableName + " (username, password, role, email, createdDate) " +
                 "VALUES (?, ?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             Date sqlDate = new Date(System.currentTimeMillis());
 
@@ -93,11 +90,11 @@ public class UserDAO extends MainDAO {
         return 0;
     }
 
-    public int updateUser(User user) {
+    public boolean updateUser(User user) {
         String query = "UPDATE " + this.tableName + " SET username=?, password=?, role=?, email=?, createdDate=?" +
                 " WHERE id=?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             // Set values for the placeholders
             stmt.setString(1, user.getUsername());
@@ -113,18 +110,14 @@ public class UserDAO extends MainDAO {
 
             // Check if successful
             if (rowsAffected > 0) {
-                try (ResultSet rs = stmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        return rs.getInt(1);
-                    }
-                }
+                return true;
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        return 0;
+        return false;
     }
 
     public static String getMD5(String input) {

@@ -1,8 +1,7 @@
 <div class="row justify-content-md-center">
     <div class="col-sm-5">
-        <h2 class="text-center">Welcome to MegaCity</h2>
-        <hr>
         <h3 class="text-center">Login</h3>
+        <hr>
         <form method="post" action="login">
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
@@ -20,6 +19,7 @@
                 <button type="submit" class="btn btn-primary w-100">Login</button>
             <% } %>
         </form>
-        <a href="register" class="anchor-link text-primary w-100">Sign up</a>
+        <hr>
+        <a href="register" class="btn btn-secondary w-100 text-center">Sign up</a>
     </div>
 </div>

@@ -20,9 +20,18 @@ public class LoginServlet extends HttpServlet {
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/template.jsp");
         try {
-            request.setAttribute("page", "login");
-            request.setAttribute("title", "Login");
-            dispatcher.forward(request, response);
+
+            String logout = request.getParameter("logout");
+
+            if (logout != null) {
+                HttpSession session = request.getSession();
+                session.invalidate();
+                response.sendRedirect("login");
+            } else {
+                request.setAttribute("page", "login");
+                request.setAttribute("title", "Login");
+                dispatcher.forward(request, response);
+            }
         } catch (ServletException e) {
             throw new RuntimeException(e);
         }
@@ -40,7 +49,13 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("userId", user.getId());
             session.setAttribute("username", user.getUsername());
-            response.sendRedirect("index");
+            session.setAttribute("role", user.getRole());
+
+            if (user.getRole().equals("admin")) {
+                response.sendRedirect("admin");
+            } else {
+                response.sendRedirect("booking");
+            }
         } catch (Exception e) {
             response.sendRedirect("login?error=" + e.getMessage());
         }
