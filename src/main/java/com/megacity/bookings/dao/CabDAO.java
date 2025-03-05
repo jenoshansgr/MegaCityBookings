@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CabDAO extends MainDAO {
@@ -13,9 +15,32 @@ public class CabDAO extends MainDAO {
         this.tableName = "Cab";
     }
 
+    public List<Cab> selectAllCabs() {
+        try (PreparedStatement stmt = connection.prepareStatement(this.getSelectAllQuery())) {
+            List<Cab> cabList = new ArrayList<>();
+            ResultSet rs = stmt.executeQuery();
+            ;
+
+            while (rs.next()) {
+                Cab cab = new Cab();
+                cab.setId(rs.getInt("id"));
+                cab.setCabTypeId(rs.getInt("cabTypeId"));
+                cab.setModel(rs.getString("model"));
+                cab.setNumber(rs.getString("number"));
+                cab.setStatus(rs.getString("status"));
+                cabList.add(cab);
+            }
+
+            return cabList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public Cab getCabById(int id) {
-        try {
-            ResultSet rs = selectById(id);
+        try (PreparedStatement stmt = connection.prepareStatement(this.getSelectByIdQuery(id))) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
                 Cab cab = new Cab();
@@ -63,7 +88,7 @@ public class CabDAO extends MainDAO {
         return 0;
     }
 
-    public int updateCab(Cab cab) {
+    public boolean updateCab(Cab cab) {
         String query = "UPDATE " + this.tableName + " SET cabTypeId=?, model=?, number=?, status=? " +
                 " WHERE id=?";
 
@@ -76,23 +101,17 @@ public class CabDAO extends MainDAO {
             stmt.setString(4, cab.getStatus());
             stmt.setInt(5, cab.getId());
 
-
             int rowsAffected = stmt.executeUpdate();
 
             // Check if successful
             if (rowsAffected > 0) {
-                try (ResultSet rs = stmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        return rs.getInt(1);
-                    }
-                }
+                return true;
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        return 0;
+        return false;
     }
 
 }

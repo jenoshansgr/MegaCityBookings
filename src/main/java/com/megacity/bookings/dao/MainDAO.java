@@ -4,7 +4,6 @@ import com.megacity.bookings.model.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
@@ -20,20 +19,12 @@ public class MainDAO {
         }
     }
 
-    public ResultSet selectById(int id) {
-        String query = "SELECT * FROM " + tableName + " WHERE id=?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
+    public String getSelectByIdQuery(int id) {
+        return "SELECT * FROM " + tableName + " WHERE id=?";
+    }
 
-            if (rs.next()) {
-                return rs;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return null;
+    public String getSelectAllQuery() {
+        return "SELECT * FROM " + tableName;
     }
 
     public boolean deleteById(int id) {

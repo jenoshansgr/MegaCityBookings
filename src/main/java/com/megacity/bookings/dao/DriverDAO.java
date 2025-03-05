@@ -14,8 +14,9 @@ public class DriverDAO extends MainDAO {
     }
 
     public Driver getDriverById(int id) {
-        try {
-            ResultSet rs = selectById(id);
+        try (PreparedStatement stmt = connection.prepareStatement(this.getSelectByIdQuery(id))) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
                 Driver driver = new Driver();
@@ -65,7 +66,7 @@ public class DriverDAO extends MainDAO {
         return 0;
     }
 
-    public int updateDriver(Driver driver) {
+    public boolean updateDriver(Driver driver) {
         String query = "UPDATE " + this.tableName + " SET firstName=?, lastName=?, licenseNo=?, licenseExpireDate=?, status=? " +
                 " WHERE id=?";
 
@@ -84,18 +85,14 @@ public class DriverDAO extends MainDAO {
 
             // Check if successful
             if (rowsAffected > 0) {
-                try (ResultSet rs = stmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        return rs.getInt(1);
-                    }
-                }
+                return true;
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        return 0;
+        return false;
     }
 
 }

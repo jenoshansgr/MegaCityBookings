@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
@@ -16,6 +17,12 @@ public class CustomerServlet extends HttpServlet {
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/template.jsp");
         try {
+            HttpSession session = request.getSession();
+            if (session.getAttribute("userId") == null ||
+                    !session.getAttribute("role").equals("admin")) {
+                session.invalidate();
+                response.sendRedirect("login");
+            }
 
             request.setAttribute("page", "customer");
             request.setAttribute("title", "Customer");

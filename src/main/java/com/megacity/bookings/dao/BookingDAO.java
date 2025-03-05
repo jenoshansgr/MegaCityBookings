@@ -14,8 +14,9 @@ public class BookingDAO extends MainDAO {
     }
 
     public Booking getBookingById(int id) {
-        try {
-            ResultSet rs = selectById(id);
+        try (PreparedStatement stmt = connection.prepareStatement(this.getSelectByIdQuery(id))) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
                 Booking booking = new Booking();
@@ -75,7 +76,7 @@ public class BookingDAO extends MainDAO {
         return 0;
     }
 
-    public int updateBooking(Booking booking) {
+    public boolean updateBooking(Booking booking) {
         String query = "UPDATE " + this.tableName + " SET destination=?, orderNo=?, orderDate=?, tripDate=?, noOfDays=?, distanceKm=?, cabId=?, driverId=?, pricePerDay=?, pricePerKm=? " +
                 " WHERE id=?";
 
@@ -99,18 +100,14 @@ public class BookingDAO extends MainDAO {
 
             // Check if successful
             if (rowsAffected > 0) {
-                try (ResultSet rs = stmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        return rs.getInt(1);
-                    }
-                }
+                return true;
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        return 0;
+        return false;
     }
 
 }

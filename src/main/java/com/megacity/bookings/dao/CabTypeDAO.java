@@ -1,10 +1,13 @@
 package com.megacity.bookings.dao;
 
 import com.megacity.bookings.model.CabType;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CabTypeDAO extends MainDAO {
@@ -12,9 +15,31 @@ public class CabTypeDAO extends MainDAO {
         this.tableName = "CabType";
     }
 
+    public List<CabType> selectAllCabTypes() {
+        try (PreparedStatement stmt = connection.prepareStatement(this.getSelectAllQuery())) {
+            List<CabType> cabTypeList = new ArrayList<>();
+            ResultSet rs = stmt.executeQuery();
+            ;
+
+            while (rs.next()) {
+                CabType cabType = new CabType();
+                cabType.setId(rs.getInt("id"));
+                cabType.setName(rs.getString("name"));
+                cabType.setPricePerDay(rs.getDouble("pricePerDay"));
+                cabType.setPricePerKm(rs.getDouble("pricePerKm"));
+                cabTypeList.add(cabType);
+            }
+
+            return cabTypeList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public CabType getCabTypeById(int id) {
-        try {
-            ResultSet rs = selectById(id);
+        try (PreparedStatement stmt = connection.prepareStatement(this.getSelectByIdQuery(id))) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
                 CabType cabType = new CabType();
@@ -60,7 +85,7 @@ public class CabTypeDAO extends MainDAO {
         return 0;
     }
 
-    public int updateCabType(CabType cabType) {
+    public boolean updateCabType(CabType cabType) {
         String query = "UPDATE " + this.tableName + " SET name=?, pricePerDay=?, pricePerKm=? " +
                 " WHERE id=?";
 
@@ -77,18 +102,14 @@ public class CabTypeDAO extends MainDAO {
 
             // Check if successful
             if (rowsAffected > 0) {
-                try (ResultSet rs = stmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        return rs.getInt(1);
-                    }
-                }
+                return true;
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        return 0;
+        return false;
     }
 
 }

@@ -14,8 +14,9 @@ public class CustomerDAO extends MainDAO {
     }
 
     public Customer getCustomerById(int id) {
-        try {
-            ResultSet rs = selectById(id);
+        try (PreparedStatement stmt = connection.prepareStatement(this.getSelectByIdQuery(id))) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
                 Customer customer = new Customer();
@@ -68,7 +69,7 @@ public class CustomerDAO extends MainDAO {
         return 0;
     }
 
-    public int updateCustomer(Customer customer) {
+    public boolean updateCustomer(Customer customer) {
         String query = "UPDATE " + this.tableName + " SET firstName=?, lastName=?, email=?, address=?, phoneNumber=?, userId=? " +
                 " WHERE id=?";
 
@@ -88,18 +89,14 @@ public class CustomerDAO extends MainDAO {
 
             // Check if successful
             if (rowsAffected > 0) {
-                try (ResultSet rs = stmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        return rs.getInt(1);
-                    }
-                }
+                return true;
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        return 0;
+        return false;
     }
 
 }

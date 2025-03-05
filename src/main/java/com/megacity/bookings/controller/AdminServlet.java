@@ -17,6 +17,12 @@ public class AdminServlet extends HttpServlet {
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/template.jsp");
         try {
+            HttpSession session = request.getSession();
+            if (session.getAttribute("userId") == null ||
+                    !session.getAttribute("role").equals("admin")) {
+                session.invalidate();
+                response.sendRedirect("login");
+            }
 
             request.setAttribute("page", "admin");
             request.setAttribute("title", "Dashboard");

@@ -14,8 +14,9 @@ public class CustomerBookingDAO extends MainDAO {
     }
 
     public CustomerBooking getCustomerBookingById(int id) {
-        try {
-            ResultSet rs = selectById(id);
+        try (PreparedStatement stmt = connection.prepareStatement(this.getSelectByIdQuery(id))) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
                 CustomerBooking customerBooking = new CustomerBooking();
@@ -29,7 +30,7 @@ public class CustomerBookingDAO extends MainDAO {
         return null;
     }
 
-    public int saveCustomerBooking(CustomerBooking customerBooking) {
+    public boolean saveCustomerBooking(CustomerBooking customerBooking) {
         String query = "INSERT INTO " + this.tableName + " (customerId, bookingId) " +
                 "VALUES (?, ?)";
 
@@ -44,21 +45,17 @@ public class CustomerBookingDAO extends MainDAO {
 
             // Check if successful
             if (rowsAffected > 0) {
-                try (ResultSet rs = stmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        return rs.getInt(1);
-                    }
-                }
+                return true;
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        return 0;
+        return false;
     }
 
-    public int updateCustomerBooking(CustomerBooking customerBooking) {
+    public boolean updateCustomerBooking(CustomerBooking customerBooking) {
         this.deleteById(customerBooking.getBookingId());
 
         String query = "DELETE FROM " + this.tableName + " WHERE customerId=? AND bookingId=?";
@@ -75,7 +72,7 @@ public class CustomerBookingDAO extends MainDAO {
             throw new RuntimeException(e);
         }
 
-        return 0;
+        return false;
     }
 
 }

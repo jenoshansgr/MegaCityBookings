@@ -7,6 +7,10 @@ public class Cab {
     protected String number;
     protected String status;
 
+    protected String cabType;
+    private double pricePerDay;
+    private double pricePerKm;
+
     public int getId() {
         return id;
     }
@@ -45,5 +49,29 @@ public class Cab {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getCabType() {
+        return cabType;
+    }
+
+    public void setCabType(String cabType) {
+        this.cabType = cabType;
+    }
+
+    public double getPricePerDay() {
+        return pricePerDay;
+    }
+
+    public void setPricePerDay(double pricePerDay) {
+        this.pricePerDay = pricePerDay;
+    }
+
+    public double getPricePerKm() {
+        return pricePerKm;
+    }
+
+    public void setPricePerKm(double pricePerKm) {
+        this.pricePerKm = pricePerKm;
     }
 }
