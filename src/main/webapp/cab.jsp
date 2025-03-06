@@ -86,8 +86,9 @@
                         <th>#ID</th>
                         <th>Cab Type</th>
                         <th>Cab Model</th>
-                        <th>PP Day</th>
-                        <th>PP Km</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -99,9 +100,11 @@
                         </td>
                         <td><%= cab.getModel() %>
                         </td>
-                        <td><%= cab.getPricePerDay() %>
+                        <td>PPD: <%= cab.getPricePerDay() %>
+                            <br>
+                            PPKm: <%= cab.getPricePerKm() %>
                         </td>
-                        <td><%= cab.getPricePerKm() %>
+                        <td><%= cab.getStatus() %>
                         </td>
                         <td>
                             <a href="cab?edit=<%= cab.getId() %>" class="btn btn-secondary btn-sm w-100 mb-1">Edit</a>

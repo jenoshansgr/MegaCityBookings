@@ -14,6 +14,7 @@ import java.io.IOException;
 
 @WebServlet(name = "cabServlet", value = "/cab")
 public class CabServlet extends HttpServlet {
+    private final String page = "cab";
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -29,18 +30,18 @@ public class CabServlet extends HttpServlet {
 
             CabService cabService = new CabService();
 
-            String deleteCab = request.getParameter("delete");
+            String delete = request.getParameter("delete");
 
-            if (deleteCab != null) {
-                int cabId = Integer.parseInt(deleteCab);
+            if (delete != null) {
+                int id = Integer.parseInt(delete);
 
-                if (cabService.deleteCabById(cabId)) {
-                    response.sendRedirect("cab?success=Record successfully deleted.");
+                if (cabService.deleteCabById(id)) {
+                    response.sendRedirect(this.page + "?success=Record successfully deleted.");
                 } else {
-                    response.sendRedirect("cab?error=Failed to delete record.");
+                    response.sendRedirect(this.page + "?error=Failed to delete record.");
                 }
             } else {
-                request.setAttribute("page", "cab");
+                request.setAttribute("page", this.page);
                 request.setAttribute("title", "Cab");
 
                 request.setAttribute("cabList", cabService.getCabList());
@@ -76,7 +77,7 @@ public class CabServlet extends HttpServlet {
         CabService cabService = new CabService();
 
         try {
-            String cabIdParam = request.getParameter("edit");
+            String edit = request.getParameter("edit");
 
             Cab cab = new Cab();
             cab.setNumber(number);
@@ -84,26 +85,26 @@ public class CabServlet extends HttpServlet {
             cab.setStatus(status);
             cab.setCabTypeId(cabTypeId);
 
-            if (cabIdParam != null) {
-                int cabId = Integer.parseInt(cabIdParam);
-                cab.setId(cabId);
+            if (edit != null) {
+                int id = Integer.parseInt(edit);
+                cab.setId(id);
 
                 if (cabService.updateCab(cab)) {
-                    response.sendRedirect("cab?success=Record has been updated.");
+                    response.sendRedirect(this.page + "?success=Record has been updated.");
                 } else {
-                    response.sendRedirect("cab?error=Failed to update record.");
+                    response.sendRedirect(this.page + "?error=Failed to update record.");
                 }
             } else {
                 int cabId = cabService.insert(cab);
 
                 if (cabId > 0) {
-                    response.sendRedirect("cab?success=Record has been created.");
+                    response.sendRedirect(this.page + "?success=Record has been created.");
                 } else {
-                    response.sendRedirect("cab?error=Failed to create record.");
+                    response.sendRedirect(this.page + "?error=Failed to create record.");
                 }
             }
         } catch (Exception e) {
-            response.sendRedirect("cab?error=" + e.getMessage());
+            response.sendRedirect(this.page + "?error=" + e.getMessage());
         }
 
     }

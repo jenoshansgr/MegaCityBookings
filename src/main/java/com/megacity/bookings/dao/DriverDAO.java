@@ -6,11 +6,36 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DriverDAO extends MainDAO {
     public DriverDAO() {
         this.tableName = "Driver";
+    }
+
+    public List<Driver> selectAllDrivers() {
+        try (PreparedStatement stmt = connection.prepareStatement(this.getSelectAllQuery())) {
+            List<Driver> driverList = new ArrayList<>();
+            ResultSet rs = stmt.executeQuery();
+            ;
+
+            while (rs.next()) {
+                Driver driver = new Driver();
+                driver.setId(rs.getInt("id"));
+                driver.setFirstName(rs.getString("firstName"));
+                driver.setLastName(rs.getString("lastName"));
+                driver.setLicenseNo(rs.getString("licenseNo"));
+                driver.setLicenseExpireDate(rs.getDate("licenseExpireDate"));
+                driver.setStatus(rs.getString("status"));
+                driverList.add(driver);
+            }
+
+            return driverList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Driver getDriverById(int id) {
