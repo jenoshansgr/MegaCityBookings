@@ -14,7 +14,8 @@ public class CustomerBookingDAO extends MainDAO {
     }
 
     public CustomerBooking getCustomerBookingById(int id) {
-        try (PreparedStatement stmt = connection.prepareStatement(this.getSelectByIdQuery(id))) {
+        String query = "SELECT * FROM " + tableName + " WHERE bookingId=?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 

@@ -8,7 +8,7 @@ import com.megacity.bookings.model.CabType;
 import java.util.List;
 
 
-// User Service
+// Cab Service
 public class CabService {
     private final CabDAO cabDAO;
     private final CabTypeDAO cabTypeDAO;
@@ -52,6 +52,11 @@ public class CabService {
             return new Cab();
         }
 
+        CabType cabType = this.cabTypeDAO.getCabTypeById(cab.getCabTypeId());
+        cab.setCabType(cabType.getName());
+        cab.setPricePerDay(cabType.getPricePerDay());
+        cab.setPricePerKm(cabType.getPricePerKm());
+
         return cab;
     }
 
@@ -61,5 +66,18 @@ public class CabService {
 
     public boolean updateCab(Cab cab) {
         return this.cabDAO.updateCab(cab);
+    }
+
+    public List<Cab> getAvailableCabList() {
+        List<Cab> cabList = this.cabDAO.selectAllAvailableCabs();
+
+        for (Cab cab : cabList) {
+            CabType cabType = this.cabTypeDAO.getCabTypeById(cab.getCabTypeId());
+            cab.setCabType(cabType.getName());
+            cab.setPricePerDay(cabType.getPricePerDay());
+            cab.setPricePerKm(cabType.getPricePerKm());
+        }
+
+        return cabList;
     }
 }

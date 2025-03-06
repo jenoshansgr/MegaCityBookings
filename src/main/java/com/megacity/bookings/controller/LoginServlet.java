@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import javax.naming.AuthenticationException;
 import java.io.IOException;
 
 @WebServlet("/login")
@@ -54,7 +53,7 @@ public class LoginServlet extends HttpServlet {
             if (user.getRole().equals("admin")) {
                 response.sendRedirect("admin");
             } else {
-                response.sendRedirect("booking");
+                response.sendRedirect("customerBooking");
             }
         } catch (Exception e) {
             response.sendRedirect("login?error=" + e.getMessage());

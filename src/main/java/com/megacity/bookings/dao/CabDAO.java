@@ -19,7 +19,7 @@ public class CabDAO extends MainDAO {
         try (PreparedStatement stmt = connection.prepareStatement(this.getSelectAllQuery())) {
             List<Cab> cabList = new ArrayList<>();
             ResultSet rs = stmt.executeQuery();
-            ;
+            BookingDAO bookingDAO = new BookingDAO();
 
             while (rs.next()) {
                 Cab cab = new Cab();
@@ -27,7 +27,13 @@ public class CabDAO extends MainDAO {
                 cab.setCabTypeId(rs.getInt("cabTypeId"));
                 cab.setModel(rs.getString("model"));
                 cab.setNumber(rs.getString("number"));
-                cab.setStatus(rs.getString("status"));
+
+                if (bookingDAO.isCabAvailable(cab.getId())) {
+                    cab.setStatus("available");
+                } else {
+                    cab.setStatus("na");
+                }
+
                 cabList.add(cab);
             }
 
@@ -41,6 +47,7 @@ public class CabDAO extends MainDAO {
         try (PreparedStatement stmt = connection.prepareStatement(this.getSelectByIdQuery(id))) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
+            BookingDAO bookingDAO = new BookingDAO();
 
             if (rs.next()) {
                 Cab cab = new Cab();
@@ -48,7 +55,13 @@ public class CabDAO extends MainDAO {
                 cab.setCabTypeId(rs.getInt("cabTypeId"));
                 cab.setModel(rs.getString("model"));
                 cab.setNumber(rs.getString("number"));
-                cab.setStatus(rs.getString("status"));
+
+                if (bookingDAO.isCabAvailable(cab.getId())) {
+                    cab.setStatus("available");
+                } else {
+                    cab.setStatus("na");
+                }
+
                 return cab;
             }
         } catch (SQLException e) {
@@ -112,6 +125,33 @@ public class CabDAO extends MainDAO {
         }
 
         return false;
+    }
+
+    public List<Cab> selectAllAvailableCabs() {
+        try (PreparedStatement stmt = connection.prepareStatement(this.getSelectAllQuery())) {
+            List<Cab> cabList = new ArrayList<>();
+            ResultSet rs = stmt.executeQuery();
+
+            BookingDAO bookingDAO = new BookingDAO();
+
+            while (rs.next()) {
+                Cab cab = new Cab();
+                cab.setId(rs.getInt("id"));
+
+
+                if (bookingDAO.isCabAvailable(cab.getId())) {
+                    cab.setCabTypeId(rs.getInt("cabTypeId"));
+                    cab.setModel(rs.getString("model"));
+                    cab.setNumber(rs.getString("number"));
+                    cab.setStatus(rs.getString("status"));
+                    cabList.add(cab);
+                }
+            }
+
+            return cabList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

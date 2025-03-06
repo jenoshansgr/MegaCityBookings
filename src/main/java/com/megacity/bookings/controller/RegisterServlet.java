@@ -64,7 +64,7 @@ public class RegisterServlet extends HttpServlet {
             if (user.getRole().equals("admin")) {
                 response.sendRedirect("admin");
             } else {
-                response.sendRedirect("booking");
+                response.sendRedirect("customerBooking");
             }
         } catch (Exception e) {
             response.sendRedirect("register?error=" + e.getMessage());

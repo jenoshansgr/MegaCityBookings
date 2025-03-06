@@ -1,9 +1,11 @@
 <%@ page import="com.megacity.bookings.model.Driver" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Objects" %>
+<%@ page import="com.megacity.bookings.service.BookingService" %>
 <%
     List<Driver> driverList = (List) request.getAttribute("driverList");
     Driver driverRecord = (Driver) request.getAttribute("driver");
+    BookingService bookingService = new BookingService();
 %>
 
 <h2>Driver</h2>
@@ -55,8 +57,8 @@
                         <option value="available" <%= (Objects.equals(driverRecord.getStatus(), "available")) ? "selected" : "" %>>
                             Available
                         </option>
-                        <option value="na" <%= (Objects.equals(driverRecord.getStatus(), "na")) ? "selected" : "" %>>Not
-                            Available
+                        <option value="na" <%= (Objects.equals(driverRecord.getStatus(), "na")) ? "selected" : "" %>>
+                            Booked
                         </option>
                     </select>
                 </div>
@@ -101,7 +103,12 @@
                         </td>
                         <td><%= driver.getLicenseExpireDate() %>
                         </td>
-                        <td><%= driver.getStatus() %>
+                        <td>
+                            <% if (bookingService.isDriverAvailable(driver.getId())) { %>
+                            Available
+                            <% } else { %>
+                            Booked
+                            <% }%>
                         </td>
                         <td>
                             <a href="driver?edit=<%= driver.getId() %>"

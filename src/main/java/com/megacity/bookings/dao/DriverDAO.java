@@ -19,7 +19,6 @@ public class DriverDAO extends MainDAO {
         try (PreparedStatement stmt = connection.prepareStatement(this.getSelectAllQuery())) {
             List<Driver> driverList = new ArrayList<>();
             ResultSet rs = stmt.executeQuery();
-            ;
 
             while (rs.next()) {
                 Driver driver = new Driver();
@@ -120,4 +119,31 @@ public class DriverDAO extends MainDAO {
         return false;
     }
 
+    public List<Driver> selectAllAvailableDrivers() {
+        try (PreparedStatement stmt = connection.prepareStatement(this.getSelectAllQuery())) {
+            List<Driver> driverList = new ArrayList<>();
+            ResultSet rs = stmt.executeQuery();
+
+            BookingDAO bookingDAO = new BookingDAO();
+
+            while (rs.next()) {
+                Driver driver = new Driver();
+                driver.setId(rs.getInt("id"));
+
+                if (bookingDAO.isDriverAvailable(driver.getId())) {
+                    driver.setFirstName(rs.getString("firstName"));
+                    driver.setLastName(rs.getString("lastName"));
+                    driver.setLicenseNo(rs.getString("licenseNo"));
+                    driver.setLicenseExpireDate(rs.getDate("licenseExpireDate"));
+                    driver.setStatus(rs.getString("status"));
+                    driverList.add(driver);
+                }
+
+            }
+
+            return driverList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

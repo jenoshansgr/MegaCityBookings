@@ -57,31 +57,29 @@
     </div>
     <div class="row pt-4">
         <% if (userId > 0) { %>
-        <div class="col col-lg-3">
+        <% if ("admin".equals(role)) { %>
+        <div class="col">
             <div class="list-group">
-                <% if ("customer".equals(role)) { %>
-                <a href="booking"
-                   class="list-group-item list-group-item-action <%= ("booking".equals(pageFile)) ? "active aria-current=\"true\"" : "" %>">My
-                    Booking</a>
-                <% } else if ("admin".equals(role)) { %>
+
                 <a href="admin"
                    class="list-group-item list-group-item-action <%= ("admin".equals(pageFile)) ? "active aria-current=\"true\"" : "" %>">Dashboard</a>
                 <a href="booking"
                    class="list-group-item list-group-item-action <%= ("booking".equals(pageFile)) ? "active aria-current=\"true\"" : "" %>">Booking</a>
                 <a href="cab"
                    class="list-group-item list-group-item-action <%= ("cab".equals(pageFile)) ? "active aria-current=\"true\"" : "" %>">Cabs</a>
-                <a href="cabType"
-                   class="list-group-item list-group-item-action <%= ("cabType".equals(pageFile)) ? "active aria-current=\"true\"" : "" %>">Cab
-                    Type</a>
+                <%--                <a href="cabType"--%>
+                <%--                   class="list-group-item list-group-item-action <%= ("cabType".equals(pageFile)) ? "active aria-current=\"true\"" : "" %>">Cab--%>
+                <%--                    Type</a>--%>
                 <a href="driver"
                    class="list-group-item list-group-item-action <%= ("driver".equals(pageFile)) ? "active aria-current=\"true\"" : "" %>">Driver</a>
-                <a href="customer"
-                   class="list-group-item list-group-item-action <%= ("customer".equals(pageFile)) ? "active aria-current=\"true\"" : "" %>">Customer</a>
-                <% } %>
+                <%--                <a href="customer"--%>
+                <%--                   class="list-group-item list-group-item-action <%= ("customer".equals(pageFile)) ? "active aria-current=\"true\"" : "" %>">Customer</a>--%>
+
             </div>
         </div>
         <% } %>
-        <div class="col <%= (userId > 0) ? "col-lg-9" : "" %>">
+        <% } %>
+        <div class="col <%= (userId > 0 && "admin".equals(role)) ? "col-lg-9" : "" %>">
 
             <% if (userId == 0) {%>
             <% if ("index".equals(pageFile)) { %>
@@ -95,8 +93,8 @@
             <% } %>
             <% } else {%>
             <% if ("customer".equals(role)) { %>
-            <% if ("customer-booking".equals(pageFile)) { %>
-            <jsp:include page="booking.jsp"/>
+            <% if ("customerBooking".equals(pageFile)) { %>
+            <jsp:include page="customerBooking.jsp"/>
             <% } else {%>
             <p>Page not found</p>
             <% }%>
@@ -105,7 +103,7 @@
             <jsp:include page="admin.jsp"/>
             <% } else if ("user".equals(pageFile)) { %>
             <jsp:include page="user.jsp"/>
-            <% } else if ("admin-booking".equals(pageFile)) { %>
+            <% } else if ("booking".equals(pageFile)) { %>
             <jsp:include page="booking.jsp"/>
             <% } else if ("cab".equals(pageFile)) { %>
             <jsp:include page="cab.jsp"/>

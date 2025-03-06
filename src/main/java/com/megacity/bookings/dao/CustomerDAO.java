@@ -35,6 +35,29 @@ public class CustomerDAO extends MainDAO {
         return null;
     }
 
+    public Customer getCustomerByUserId(int id) {
+        String query = "SELECT * FROM " + tableName + " WHERE userId=?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Customer customer = new Customer();
+                customer.setId(rs.getInt("id"));
+                customer.setFirstName(rs.getString("firstName"));
+                customer.setLastName(rs.getString("lastName"));
+                customer.setEmail(rs.getString("email"));
+                customer.setAddress(rs.getString("address"));
+                customer.setPhoneNumber(rs.getString("phoneNumber"));
+                customer.setUserId(rs.getInt("userId"));
+                return customer;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
     public int saveCustomer(Customer customer) {
         String query = "INSERT INTO " + this.tableName + " (firstName, lastName, email, address, phoneNumber, userId) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";

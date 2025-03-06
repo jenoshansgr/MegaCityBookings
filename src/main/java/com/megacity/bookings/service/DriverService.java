@@ -6,7 +6,7 @@ import com.megacity.bookings.model.Driver;
 import java.util.List;
 
 
-// User Service
+// Driver Service
 public class DriverService {
     private final DriverDAO driverDAO;
 
@@ -45,5 +45,9 @@ public class DriverService {
 
     public boolean updateDriver(Driver driver) {
         return this.driverDAO.updateDriver(driver);
+    }
+
+    public List<Driver> getAvailableDriverList() {
+        return this.driverDAO.selectAllAvailableDrivers();
     }
 }

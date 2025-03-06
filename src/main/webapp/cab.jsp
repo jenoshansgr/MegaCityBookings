@@ -41,7 +41,7 @@
 
                 <div class="mb-3">
                     <label for="cabType" class="form-label">Cab Type</label>
-                    <select class="form-select" aria-label="Cab Type" id="cabType" name="cabTypeId">
+                    <select class="form-select" aria-label="Cab Type" id="cabType" name="cabTypeId" required>
                         <option value="">Select Cab Type</option>
                         <% for (CabType cabType : cabTypeList) { %>
                         <option value="<%= cabType.getId() %>" <%= (cabRecord.getCabTypeId() == cabType.getId()) ? "selected" : "" %>>
@@ -54,8 +54,7 @@
 
                 <div class="mb-3">
                     <label for="status" class="form-label">Status</label>
-                    <select class="form-select" aria-label="Status" id="status" name="status">
-                        <option value="">Select Status</option>
+                    <select class="form-select" aria-label="Status" id="status" name="status" required>
                         <option value="available" <%= (Objects.equals(cabRecord.getStatus(), "available")) ? "selected" : "" %>>
                             Available
                         </option>
