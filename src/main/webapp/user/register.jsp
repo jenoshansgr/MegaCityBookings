@@ -21,7 +21,10 @@
             </div>
             <div class="mb-3">
                 <label for="phoneNumber" class="form-label">Phone Number</label>
-                <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber" required>
+                <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber" required pattern="[0-9]{10}"
+                       inputmode="numeric"
+                       oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                >
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>

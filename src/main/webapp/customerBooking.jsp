@@ -70,6 +70,7 @@
                 <div class="mb-3">
                     <label for="phoneNumber" class="form-label">Phone Number</label>
                     <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber" readonly
+                           pattern="[0-9]{10}" inputmode="numeric"
                            value="<%= (customer.getPhoneNumber() != null) ? customer.getPhoneNumber() : "" %>">
                 </div>
 

@@ -141,8 +141,7 @@ public class BookingDAO extends MainDAO {
 
     public boolean isDriverAvailable(int driverId) {
         String query = "SELECT * FROM " + this.tableName +
-                " WHERE (noOfDays IS NOT NULL AND DATE_ADD(tripDate, INTERVAL noOfDays DAY) < CURDATE()) " +
-                "AND tripDate != CURDATE() AND driverId=" + driverId;
+                " WHERE driverId=" + driverId;
 
         try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -161,8 +160,7 @@ public class BookingDAO extends MainDAO {
 
     public boolean isCabAvailable(int cabId) {
         String query = "SELECT * FROM " + this.tableName +
-                " WHERE (noOfDays IS NOT NULL AND DATE_ADD(tripDate, INTERVAL noOfDays DAY) < CURDATE()) " +
-                "AND tripDate != CURDATE() AND cabId=" + cabId;
+                " WHERE cabId=" + cabId;
 
         try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
